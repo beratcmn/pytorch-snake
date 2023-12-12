@@ -6,18 +6,18 @@ from game import SnakeGameAI, Direction, Point
 from model import Linear_QNet, QTrainer
 from helper import plot
 
-MAX_MEMORY = 100_000
-BATCH_SIZE = 1_000
-LR = 0.001
+MAX_MEMORY = 100_000  # ? How many last moves to remember
+BATCH_SIZE = 1_000  # ? How many moves to train at a time
+LR = 0.001  # ? Learning rate
 
 
 class Agent:
     def __init__(self) -> None:
         self.n_games = 0  # ? How many games have been played
-        self.epsilon = 0  # ? Controls randomness
-        self.gamma = 0.9  # ? Discount rate
+        self.epsilon = 0.0  # ? Controls randomness
+        self.gamma = 0.995  # ? Discount rate
         self.memory = deque(maxlen=MAX_MEMORY)  # ? Memory of past moves, popleft()
-        self.model = Linear_QNet(11, 256, 3)
+        self.model = Linear_QNet(11, 256, 256, 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
     def get_state(self, game):
